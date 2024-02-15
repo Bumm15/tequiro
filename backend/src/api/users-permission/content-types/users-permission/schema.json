@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "users_permissions",
+  "info": {
+    "singularName": "users-permission",
+    "pluralName": "users-permissions",
+    "displayName": "users-permissions"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "roleName": {
+      "type": "string"
+    }
+  }
+}
