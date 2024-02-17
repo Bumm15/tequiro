@@ -7,10 +7,14 @@ import {
     sendEmailVerification,
     sendPasswordResetEmail,
     signOut,
-    AuthErrorCodes
+    AuthErrorCodes,
+    GoogleAuthProvider,
+    signInWithPopup
 } from 'firebase/auth'
 
 const AuthContext = React.createContext();
+
+const provider = new GoogleAuthProvider();
 
 export function useAuth() {
     return useContext(AuthContext)
@@ -32,16 +36,15 @@ export default function AuthProvider({ children }) {
         [AuthErrorCodes.INVALID_EMAIL]: 'Invalid e-mail address',
     }
 
+    // SignUp function
     async function signUp(email, password) {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            if (!userCredential.user.emailVerified) {
-                sendEmailVerification(userCredential)
-            }
+            await sendEmailVerification(userCredential.user); // Send verification email
+
+            return { user: userCredential.user }; // Return user object on success
         } catch (error) {
-            const errorMessage = errorMessages[error.code] || 'Unknown error.. Please try again later';
-            //throw new Error(errorMessage);
-            return errorMessage;
+            return { error: error.message }; // Return error message on failure
         }
     }
 
@@ -53,6 +56,20 @@ export default function AuthProvider({ children }) {
             return error.message
         }
     }
+
+    /*
+    async function signInWithGoogle() {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                // The signed-in user info.
+                // IdP data available using getAdditionalUserInfo(result)
+                // ...
+            })
+    }
+    */
 
     async function passwordReset(email) {
         try {
