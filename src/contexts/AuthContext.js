@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { auth } from '../firebaseConfig';
+import { auth, storage } from '../firebaseConfig';
 import {
     createUserWithEmailAndPassword,
     onAuthStateChanged,
     signInWithEmailAndPassword,
-    sendEmailVerification,
     sendPasswordResetEmail,
     signOut,
     AuthErrorCodes,
     GoogleAuthProvider,
     signInWithPopup
 } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore';
 
 const AuthContext = React.createContext();
 
@@ -36,17 +36,27 @@ export default function AuthProvider({ children }) {
         [AuthErrorCodes.INVALID_EMAIL]: 'Invalid e-mail address',
     }
 
+    async function verifyCode(inputCode) {
+        const docRef = doc(storage, 'verificationCodes', 'pavelmarek25@seznam.cz');
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists() && docSnap.data().code === inputCode) {
+            return {success: true};
+        } else {
+            return { error: 'Verification code is incorrect or expired.'}
+        }
+    }
+
     // SignUp function
     async function signUp(email, password) {
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            await sendEmailVerification(userCredential.user); // Send verification email
-
-            return { user: userCredential.user }; // Return user object on success
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          // Send the verification code via email
+          return { user: userCredential.user }; // Return user object on success
         } catch (error) {
-            return { error: error.message }; // Return error message on failure
+          return { error: error.message }; // Return error message on failure
         }
-    }
+      }
 
     async function signIn(email, password) {
         try {
@@ -73,7 +83,7 @@ export default function AuthProvider({ children }) {
 
     async function passwordReset(email) {
         try {
-            await sendEmailVerification(auth, email);
+            await sendPasswordResetEmail(auth, email);
             return true;
         } catch (error) {
             return error.message;
@@ -94,6 +104,7 @@ export default function AuthProvider({ children }) {
         signUp,
         auth,
         passwordReset,
+        verifyCode,
     }
 
     return (
