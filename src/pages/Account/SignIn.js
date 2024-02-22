@@ -35,38 +35,38 @@ export default function RegisterPage() {
   }
  
   return (
-    <div className="w-full py-4">
-      <Stepper
-        lineClassName="bg-hover"
-        activeLineClassName="bg-blue-500"
-        activeStep={activeStep}
-        isLastStep={(value) => setIsLastStep(value)}
-        isFirstStep={(value) => setIsFirstStep(value)}
-      >
-        <Step 
-            //onClick={() => setActiveStep(0)}
-            activeClassName="!bg-blue-500 text-primaryText"
-            completedClassName="!bg-blue-500 text-primaryText"
+    <div className="w-full py-4 flex flex-col justify-center">
+        <Stepper
+          lineClassName="bg-hover"
+          activeLineClassName="bg-blue-500"
+          activeStep={activeStep}
+          isLastStep={(value) => setIsLastStep(value)}
+          isFirstStep={(value) => setIsFirstStep(value)}
         >
-            1
-        </Step>
-        <Step 
-            //onClick={() => setActiveStep(1)}
-            className="bg-hover text-primaryText"
-            activeClassName="!bg-blue-500 text-primaryText"
-            completedClassName="!bg-blue-500 text-primaryText"
-        >
-            2
-        </Step>
-        <Step 
-            //onClick={() => setActiveStep(2)}
-            className="bg-hover text-primaryText"
-            activeClassName="!bg-blue-500 text-primaryText"
-            completedClassName="!bg-blue-500 text-primaryText"
-        >
-            3
-        </Step>
-      </Stepper>
+          <Step 
+              //onClick={() => setActiveStep(0)}
+              activeClassName="!bg-blue-500 text-primaryText"
+              completedClassName="!bg-blue-500 text-primaryText"
+          >
+              1
+          </Step>
+          <Step 
+              //onClick={() => setActiveStep(1)}
+              className="bg-hover text-primaryText"
+              activeClassName="!bg-blue-500 text-primaryText"
+              completedClassName="!bg-blue-500 text-primaryText"
+          >
+              2
+          </Step>
+          <Step 
+              //onClick={() => setActiveStep(2)}
+              className="bg-hover text-primaryText"
+              activeClassName="!bg-blue-500 text-primaryText"
+              completedClassName="!bg-blue-500 text-primaryText"
+          >
+              3
+          </Step>
+        </Stepper>
       <section className="mt-16 flex justify-center text-primaryText">
 
         {activeStep === 0 && (

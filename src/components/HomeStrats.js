@@ -47,7 +47,7 @@ export default function HomeStrats() {
     }, [])
 
     return (
-        <>
+        <div className="w-full">
             <div className={`flex justify-between text-primaryText`}>
                 <Typography variant="h5">🔥 Hot Strategies</Typography>
                 <Typography as="a" variant="small">See All</Typography>
@@ -116,6 +116,6 @@ export default function HomeStrats() {
                 </table>
 
             </div>
-        </>
+        </div>
     )
 }

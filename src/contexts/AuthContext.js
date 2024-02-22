@@ -10,7 +10,7 @@ import {
     GoogleAuthProvider,
     signInWithPopup
 } from 'firebase/auth'
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, query, where, orderBy } from 'firebase/firestore';
 
 const AuthContext = React.createContext();
 
@@ -36,8 +36,8 @@ export default function AuthProvider({ children }) {
         [AuthErrorCodes.INVALID_EMAIL]: 'Invalid e-mail address',
     }
 
-    async function verifyCode(inputCode) {
-        const docRef = doc(storage, 'verificationCodes', 'pavelmarek25@seznam.cz');
+    async function verifyCode(inputCode, email) {
+        const docRef = doc(storage, 'verificationCodes', email);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists() && docSnap.data().code === inputCode) {
@@ -90,6 +90,15 @@ export default function AuthProvider({ children }) {
         }
     }
 
+    async function checkIfEmailIsRegisterd(email) {
+        //const docRef = doc(storage, 'users');
+
+        const q = query(storage, where("email", "==", email));
+        await getDoc(q).then(snapshot => {
+            return snapshot.size;
+        });
+    }
+
     function logOut() {
         window.location.href = "/";
         return signOut(auth)
@@ -105,6 +114,7 @@ export default function AuthProvider({ children }) {
         auth,
         passwordReset,
         verifyCode,
+        checkIfEmailIsRegisterd
     }
 
     return (

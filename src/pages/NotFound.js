@@ -40,7 +40,7 @@ export function ErrorCard({ icon, buttonName, href }) {
 
 export function NotFound() {
     return (
-        <section className="py-20 md:py-4 text-primaryText">
+        <section className="py-20 md:py-4 text-primaryText mx-auto">
             <div className="relative min-h-screen w-full ">
                 <div className="grid min-h-screen px-8">
                     <div className="container relative z-10 my-auto mx-auto grid place-items-center text-center">

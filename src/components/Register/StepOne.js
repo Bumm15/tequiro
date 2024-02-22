@@ -5,6 +5,9 @@ import logo from "./ot.webp";
 function StepOneRegister({ handleEmailChange, email, setEmail, isValid}) {
     // Contact form - email, password, password repeat
     // Send generated verification code to email
+    // check if email exists.
+
+    
 
   return (
     <div className='bg-componentColor rounded-lg my-auto p-8 text-center sm:p-10 md:p-20 xl:px-32'>
