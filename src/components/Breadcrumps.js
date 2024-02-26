@@ -11,7 +11,7 @@ export function BreadcrumbsDefault() {
         "strategies": "/strategies",
         "account": ""
     }
-    
+
     return (
         <Breadcrumbs className="bg-mainbg ">
             <a href="/" className="opacity-60 text-secondaryText">

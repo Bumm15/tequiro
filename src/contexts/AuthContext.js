@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { auth, storage } from '../firebaseConfig';
+import { auth, db, storage } from '../firebaseConfig';
 import {
     createUserWithEmailAndPassword,
     onAuthStateChanged,
@@ -8,9 +8,11 @@ import {
     signOut,
     AuthErrorCodes,
     GoogleAuthProvider,
-    signInWithPopup
+    signInWithPopup,
+    updateProfile
 } from 'firebase/auth'
 import { doc, getDoc, query, where, orderBy } from 'firebase/firestore';
+import { getDownloadURL, ref } from 'firebase/storage';
 
 const AuthContext = React.createContext();
 
@@ -41,22 +43,34 @@ export default function AuthProvider({ children }) {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists() && docSnap.data().code === inputCode) {
-            return {success: true};
+            return { success: true };
         } else {
-            return { error: 'Verification code is incorrect or expired.'}
+            return { error: 'Verification code is incorrect or expired.' }
         }
     }
 
     // SignUp function
-    async function signUp(email, password) {
+    async function signUp(email, password, username) {
         try {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          // Send the verification code via email
-          return { user: userCredential.user }; // Return user object on success
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            // Send the verification code via email
+
+            const storageRef = ref(db, `userProfilePictures/blank_pfp.webp`);
+
+
+            // After upload completes, get the download URL
+            const downloadURL = await getDownloadURL(storageRef);
+
+            console.log(downloadURL);
+
+            updateProfile(userCredential.user, {
+                displayName: username, photoURL: downloadURL
+            })
+            return { user: userCredential.user }; // Return user object on success
         } catch (error) {
-          return { error: error.message }; // Return error message on failure
+            return { error: error.message }; // Return error message on failure
         }
-      }
+    }
 
     async function signIn(email, password) {
         try {
@@ -99,6 +113,10 @@ export default function AuthProvider({ children }) {
         });
     }
 
+    async function userNameIsNotTaken(username) {
+        return true;
+    }
+
     function logOut() {
         window.location.href = "/";
         return signOut(auth)
@@ -114,7 +132,8 @@ export default function AuthProvider({ children }) {
         auth,
         passwordReset,
         verifyCode,
-        checkIfEmailIsRegisterd
+        checkIfEmailIsRegisterd,
+        userNameIsNotTaken
     }
 
     return (

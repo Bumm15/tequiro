@@ -9,29 +9,27 @@ import NotFound from "./pages/NotFound";
 import AccountInfo from "./pages/Account/AccountInfo";
 import { useAuth } from "./contexts/AuthContext";
 
-function App() {
+export default function App() {
 
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   return (
-        <Layout>
-          <div className="md:ml-5">
-            <BreadcrumbsDefault />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/strategies/:id" element={<Strategies />}  />
-              <Route path="/account/user/:userid" element={<AccountInfo />} />
-              {!user && (
-                <>
-                  <Route path="/account/login" element={<LoginPage />} />
-                  <Route path="/account/register" element={<RegisterPage />} />
-                </>
-              )}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
-        </Layout>
+    <Layout>
+      <div className="md:ml-5">
+        <BreadcrumbsDefault />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/strategies/:id" element={<Strategies />} />
+          <Route path="/account" element={<AccountInfo />} />
+          {!user && (
+            <>
+              <Route path="/account/login" element={<LoginPage />} />
+              <Route path="/account/register" element={<RegisterPage />} />
+            </>
+          )}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+    </Layout>
   );
 }
-
-export default App;

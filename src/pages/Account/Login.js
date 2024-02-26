@@ -12,6 +12,7 @@ export default function LoginPage() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        console.log("login")
         try {
             await signIn(email, password);
         } catch (error) {
@@ -83,13 +84,13 @@ export default function LoginPage() {
                         />
 
                     </div>
-                    <Button color="blue" size="lg" className="mt-6" fullWidth onClick={() => handleLogin}>
+                    <Button color="blue" size="lg" className="mt-6" fullWidth onClick={(e) => handleLogin(e)}>
                         log in
                     </Button>
-                    <div class="relative flex py-5 items-center">
-                        <div class="flex-grow border-t border-gray-400"></div>
-                        <span class="flex-shrink mx-4 text-gray-400">Other options</span>
-                        <div class="flex-grow border-t border-gray-400"></div>
+                    <div className="relative flex py-5 items-center">
+                        <div className="flex-grow border-t border-gray-400"></div>
+                        <span className="flex-shrink mx-4 text-gray-400">Other options</span>
+                        <div className="flex-grow border-t border-gray-400"></div>
                     </div>
 
                     <Button
